@@ -21,6 +21,7 @@ var TEXTEDITOR_CLASS = "dx-texteditor",
     TEXTEDITOR_CONTAINER_CLASS = "dx-texteditor-container",
     TEXTEDITOR_BUTTONS_CONTAINER_CLASS = "dx-texteditor-buttons-container",
     TEXTEDITOR_PLACEHOLDER_CLASS = "dx-placeholder",
+    TEXTEDITOR_LABEL_CLASS = "dx-label",
     TEXTEDITOR_SHOW_CLEAR_BUTTON_CLASS = "dx-show-clear-button",
     TEXTEDITOR_ICON_CLASS = "dx-icon",
     TEXTEDITOR_CLEAR_ICON_CLASS = "dx-icon-clear",
@@ -267,6 +268,17 @@ var TextEditorBase = Editor.inherit({
             */
             text: undefined,
 
+            /**
+            * @name dxTextEditorOptions.label
+            * @type any
+            * @default { text: "", alignment: "left top" }
+            * @inheritdoc
+            */
+            label: {
+                text: "",
+                alignment: "left top"
+            },
+
             valueFormat: function(value) {
                 return value;
             }
@@ -330,6 +342,7 @@ var TextEditorBase = Editor.inherit({
 
         this._renderEnterKeyAction();
         this._renderEmptinessEvent();
+        this._renderLabel();
         this.callBase();
     },
 
@@ -491,6 +504,36 @@ var TextEditorBase = Editor.inherit({
 
     _placeholder: function() {
         return this._$placeholder || $();
+    },
+
+    _renderLabel: function() {
+        var labelData = this.option("label");
+
+        if(labelData) {
+            if(typeof labelData === "string") {
+                labelData = { text: labelData };
+            } else if(typeof labelData !== "object" || labelData.text === undefined) {
+                // error
+
+            }
+
+            if(!labelData.alignment) {
+                labelData.alignment = "left top";  // extract default alignment
+            }
+
+
+        }
+
+        var $input = this._input();
+
+        var alignmentClass = labelData.alignment.replace(" ", "-");
+
+        var $label = $('<div>')
+            .addClass(TEXTEDITOR_LABEL_CLASS)
+            .addClass(alignmentClass)
+            .text(labelData.text);
+
+        $label.insertAfter($input);
     },
 
     _renderInputAddons: function() {
@@ -710,6 +753,9 @@ var TextEditorBase = Editor.inherit({
                 break;
             case "placeholder":
                 this._renderPlaceholder();
+                break;
+            case "label":
+                this._renderLabel();
                 break;
             case "showClearButton":
                 this._renderInputAddons();
