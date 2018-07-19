@@ -21,7 +21,8 @@ var TEXTEDITOR_CLASS = "dx-texteditor",
     TEXTEDITOR_CONTAINER_CLASS = "dx-texteditor-container",
     TEXTEDITOR_BUTTONS_CONTAINER_CLASS = "dx-texteditor-buttons-container",
     TEXTEDITOR_PLACEHOLDER_CLASS = "dx-placeholder",
-    TEXTEDITOR_LABEL_CLASS = "dx-label",
+    TEXTEDITOR_LABEL_CLASS = "dx-texteditor-label",
+    TEXTEDITOR_WITH_LABEL_CLASS = "dx-texteditor-with-label",
     TEXTEDITOR_SHOW_CLEAR_BUTTON_CLASS = "dx-show-clear-button",
     TEXTEDITOR_ICON_CLASS = "dx-icon",
     TEXTEDITOR_CLEAR_ICON_CLASS = "dx-icon-clear",
@@ -506,6 +507,10 @@ var TextEditorBase = Editor.inherit({
         return this._$placeholder || $();
     },
 
+    _isTopLabelAlignment: function(alignmentString) {
+        return alignmentString.indexOf("top") >= 0;
+    },
+
     _renderLabel: function() {
         var labelData = this.option("label");
 
@@ -522,18 +527,22 @@ var TextEditorBase = Editor.inherit({
             }
 
 
+            var $input = this._input();
+
+            var alignmentClass = labelData.alignment.replace(" ", "-");
+
+            var $label = $('<label>')
+                .addClass(TEXTEDITOR_LABEL_CLASS)
+                .addClass(alignmentClass)
+                .text(labelData.text);
+
+            $label.insertBefore($input);
+            this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
+            this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
+        } else {
+            this.$element().removeClass(TEXTEDITOR_WITH_LABEL_CLASS);
         }
 
-        var $input = this._input();
-
-        var alignmentClass = labelData.alignment.replace(" ", "-");
-
-        var $label = $('<div>')
-            .addClass(TEXTEDITOR_LABEL_CLASS)
-            .addClass(alignmentClass)
-            .text(labelData.text);
-
-        $label.insertAfter($input);
     },
 
     _renderInputAddons: function() {
