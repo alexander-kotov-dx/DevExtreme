@@ -175,7 +175,7 @@
 
     .dx-texteditor-buttons-container {
         width: @MATERIAL_TEXTEDITOR_ICON_CONTAINER_SIZE;
-        
+
         &:after {
             .dx-invalid-material-badge();
         }
@@ -193,11 +193,12 @@
     transition: all 0.3s ease;
 
     /*&.left-top {
-        
+
     }*/
 
     &.right,&.right-top {
         right: 0;
+        left: auto;
     }
 
 }
@@ -214,8 +215,10 @@
 
     &.dx-state-focused {
         .dx-texteditor-label {
+            color: @base-accent;
+
             &.right-top,&.left-top {
-                color: @base-accent;
+
             }
         }
     }
@@ -231,6 +234,30 @@
             padding-top: @MATERIAL_TEXTEDITOR_INPUT_TOP_PADDING + 4px;
             padding-bottom: @MATERIAL_TEXTEDITOR_INPUT_BOTTOM_PADDING - 4px;
         }
+
+        &.left, &right {
+            position: static;
+            width: 40%;
+
+            & + input {
+                width: 60%;
+            }
+        }
+
+        &.left {
+            float: left;
+        }
+
+        &.right {
+            float: right;
+        }
+    }
+
+    &.dx-invalid {
+        .dx-texteditor-label {
+            color: @base-danger;
+        }
+
     }
 
 }

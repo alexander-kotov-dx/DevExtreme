@@ -518,12 +518,12 @@ var TextEditorBase = Editor.inherit({
             if(typeof labelData === "string") {
                 labelData = { text: labelData };
             } else if(typeof labelData !== "object" || labelData.text === undefined) {
-                // error
+                // error: unexpected value
 
             }
 
             if(!labelData.alignment) {
-                labelData.alignment = "left top";  // extract default alignment
+                labelData.alignment = "left top";  // extract default alignment, validate alignment value
             }
 
 
@@ -537,7 +537,7 @@ var TextEditorBase = Editor.inherit({
                 .text(labelData.text);
 
             $label.insertBefore($input);
-            this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
+
             this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
         } else {
             this.$element().removeClass(TEXTEDITOR_WITH_LABEL_CLASS);
