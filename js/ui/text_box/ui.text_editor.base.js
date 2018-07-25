@@ -11,6 +11,7 @@ var $ = require("../../core/renderer"),
     each = require("../../core/utils/iterator").each,
     themes = require("../themes"),
     Editor = require("../editor/editor"),
+    Guid = require("../../core/guid"),
     eventUtils = require("../../events/utils"),
     pointerEvents = require("../../events/pointer"),
     clickEvent = require("../../events/click");
@@ -272,13 +273,10 @@ var TextEditorBase = Editor.inherit({
             /**
             * @name dxTextEditorOptions.label
             * @type any
-            * @default { text: "", alignment: "left top" }
+
             * @inheritdoc
             */
-            label: {
-                text: "",
-                alignment: "left top"
-            },
+            label: "undefined",
 
             valueFormat: function(value) {
                 return value;
@@ -511,6 +509,16 @@ var TextEditorBase = Editor.inherit({
         return alignmentString.indexOf("top") >= 0;
     },
 
+    getInputId: function() {
+        return this._inputId || this._input().attr("id");
+    },
+
+    generateInputId: function() {
+        var newId = "dx-" + new Guid();
+        this._inputId = newId;
+        return newId;
+    },
+
     _renderLabel: function() {
         var labelData = this.option("label");
 
@@ -523,7 +531,12 @@ var TextEditorBase = Editor.inherit({
             }
 
             if(!labelData.alignment) {
-                labelData.alignment = "left top";  // extract default alignment, validate alignment value
+                if(this.option("rtlEnabled")) {
+                    labelData.alignment = "right top";
+                } else {
+                    labelData.alignment = "left top";  // extract default alignment, validate alignment value
+                }
+
             }
 
 
@@ -531,14 +544,19 @@ var TextEditorBase = Editor.inherit({
 
             var alignmentClass = labelData.alignment.replace(" ", "-");
 
+            var id = this.getInputId() || this.generateInputId();
+            $input.attr("id", id);
+
             var $label = $('<label>')
                 .addClass(TEXTEDITOR_LABEL_CLASS)
                 .addClass(alignmentClass)
+                .attr("for", id)
                 .text(labelData.text);
 
             $label.insertBefore($input);
 
             this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
+
         } else {
             this.$element().removeClass(TEXTEDITOR_WITH_LABEL_CLASS);
         }

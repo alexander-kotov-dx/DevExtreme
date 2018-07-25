@@ -217,9 +217,9 @@
         .dx-texteditor-label {
             color: @base-accent;
 
-            &.right-top,&.left-top {
+            /*&.right-top,&.left-top {
 
-            }
+            }*/
         }
     }
 
@@ -230,12 +230,18 @@
     }
 
     .dx-texteditor-label {
-        &.right-top,&.left-top + input {
-            padding-top: @MATERIAL_TEXTEDITOR_INPUT_TOP_PADDING + 4px;
-            padding-bottom: @MATERIAL_TEXTEDITOR_INPUT_BOTTOM_PADDING - 4px;
+        &.right-top, &.left-top {
+            + input {
+                padding-top: @MATERIAL_TEXTEDITOR_INPUT_TOP_PADDING + 4px;
+                padding-bottom: @MATERIAL_TEXTEDITOR_INPUT_BOTTOM_PADDING - 4px;
+
+                + .dx-placeholder {
+                    padding-top: 4px;
+                }
+            }
         }
 
-        &.left, &right {
+        &.left, &.right {
             position: static;
             width: 40%;
 
@@ -246,18 +252,29 @@
 
         &.left {
             float: left;
+
+            + input + .dx-placeholder {
+                left: 40%;
+            }
         }
 
         &.right {
             float: right;
+            text-align: right;
+
+            .dx-rtl& + input + .dx-placeholder {
+                right: 40%;
+            }
         }
+
+
+
     }
 
     &.dx-invalid {
         .dx-texteditor-label {
             color: @base-danger;
         }
-
     }
 
 }
