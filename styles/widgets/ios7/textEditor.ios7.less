@@ -137,7 +137,7 @@
     line-height: @TEXTEDITOR_INVALID_BADGE_WIDTH - 3px;
 }
 
-.dx-texteditor {
+.dx-texteditor-base-container {
     .validation-icon-position();
     &.dx-invalid{
         .dx-texteditor-container {
@@ -146,6 +146,10 @@
             }
         }
     }
+}
+
+.dx-texteditor-label {
+    padding: @TEXTEDITOR_INPUT_PADDING;
 }
 
 .dx-rtl .dx-texteditor,

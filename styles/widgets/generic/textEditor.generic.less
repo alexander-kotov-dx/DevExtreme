@@ -48,25 +48,9 @@
     }
 }
 
-.dx-texteditor {
-    background: @texteditor-bg;
-    border: @GENERIC_TEXTEDITOR_BORDER_WIDTH solid @texteditor-border-color;
-    border-radius: @texteditor-border-radius;
+/*.dx-texteditor {
 
-    &.dx-state-readonly {
-        border-color: @texteditor-readonly-border-color;
-    }
-
-    &.dx-state-hover {
-        border-color: @texteditor-hover-border-color;
-    }
-
-    &.dx-state-focused, &.dx-state-active {
-        border-color: @texteditor-focused-border-color;
-    }
-
-    .validation-icon-position();
-}
+}*/
 
 .dx-show-clear-button {
     .dx-texteditor-input {
@@ -125,6 +109,30 @@
             .dx-invalid-generic-badge();
         }
     }
+}
+
+.dx-texteditor-base-container {
+    background: @texteditor-bg;
+    border: @GENERIC_TEXTEDITOR_BORDER_WIDTH solid @texteditor-border-color;
+    border-radius: @texteditor-border-radius;
+
+    .dx-state-readonly & {
+        border-color: @texteditor-readonly-border-color;
+    }
+
+    .dx-state-hover & {
+        border-color: @texteditor-hover-border-color;
+    }
+
+    .dx-state-focused &, .dx-state-active & {
+        border-color: @texteditor-focused-border-color;
+    }
+
+    .validation-icon-position();
+}
+
+.dx-texteditor-label {
+    padding: @GENERIC_TEXTEDITOR_INPUT_PADDING;
 }
 
 .dx-rtl {

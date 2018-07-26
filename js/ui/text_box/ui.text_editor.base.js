@@ -20,6 +20,7 @@ var TEXTEDITOR_CLASS = "dx-texteditor",
     TEXTEDITOR_INPUT_CLASS = "dx-texteditor-input",
     TEXTEDITOR_INPUT_SELECTOR = "." + TEXTEDITOR_INPUT_CLASS,
     TEXTEDITOR_CONTAINER_CLASS = "dx-texteditor-container",
+    TEXTEDITOR_BASE_CONTAINER_CLASS = "dx-texteditor-base-container",
     TEXTEDITOR_BUTTONS_CONTAINER_CLASS = "dx-texteditor-buttons-container",
     TEXTEDITOR_PLACEHOLDER_CLASS = "dx-placeholder",
     TEXTEDITOR_LABEL_CLASS = "dx-texteditor-label",
@@ -276,7 +277,7 @@ var TextEditorBase = Editor.inherit({
 
             * @inheritdoc
             */
-            label: "undefined",
+            label: undefined,
 
             valueFormat: function(value) {
                 return value;
@@ -346,10 +347,14 @@ var TextEditorBase = Editor.inherit({
     },
 
     _renderInput: function() {
+        var $baseContainer = $("<div>").addClass(TEXTEDITOR_BASE_CONTAINER_CLASS);  // try to rid of this element
+
         $("<div>").addClass(TEXTEDITOR_CONTAINER_CLASS)
             .append(this._createInput())
             .append($("<div>").addClass(TEXTEDITOR_BUTTONS_CONTAINER_CLASS))
-            .appendTo(this.$element());
+            .appendTo($baseContainer);
+
+        this.$element().append($baseContainer);
     },
 
     _createInput: function() {
@@ -553,7 +558,7 @@ var TextEditorBase = Editor.inherit({
                 .attr("for", id)
                 .text(labelData.text);
 
-            $label.insertBefore($input);
+            $label.insertBefore(this.$element().find("." + TEXTEDITOR_BASE_CONTAINER_CLASS));  // extract element
 
             this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
 

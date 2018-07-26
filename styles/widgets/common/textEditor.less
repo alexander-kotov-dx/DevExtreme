@@ -35,7 +35,7 @@
 }
 
 .dx-texteditor-container {
-    position: relative;
+    /*position: relative;*/
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -94,6 +94,45 @@
         opacity: 1;
     }
 }
+
+.dx-texteditor-base-container { 
+    position: relative;
+}
+
+.dx-texteditor-with-label {
+    display: flex;
+    flex-wrap: wrap;
+
+
+    .dx-texteditor-base-container {
+        flex-shrink: 1;
+        flex-grow: 1;
+        flex-basis: auto;
+        order: 1;
+    }
+
+    .dx-texteditor-label {
+        flex-basis: auto;
+
+        &.left-top, &.right-top {
+            width: 100%;
+        }
+
+        &.left {
+            order: 0;
+        }
+
+        &.right {
+            order: 2;
+        }
+
+        &.right, &.right-top {
+            text-align: right;
+        }
+    }
+}
+
+
 
 .dx-rtl .dx-texteditor,
 .dx-rtl.dx-texteditor {
