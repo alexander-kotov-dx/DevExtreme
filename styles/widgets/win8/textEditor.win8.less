@@ -22,11 +22,11 @@
         margin: 0;
     }
 
-    .dx-texteditor-container {
+    .dx-texteditor-base-container {
         margin: 4px 0;
     }
 
-    &.dx-state-readonly .dx-texteditor-input{
+    &.dx-state-readonly .dx-texteditor-input {
         background-color: @WIN8_TEXTEDITOR_BACKGROUND;
     }
 }
@@ -135,5 +135,13 @@
     .dx-placeholder:before {
         right: 0;
         left: auto;
+    }
+}
+
+.dx-texteditor-label {
+    padding: @TEXTEDITOR_INPUT_PADDING;
+
+    &.dx-alignment-left, &.dx-alignment-right {
+        margin-top: 7px;
     }
 }

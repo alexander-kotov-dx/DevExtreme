@@ -199,22 +199,25 @@
     padding: @MATERIAL_TEXTEDITOR_INPUT_PADDING;
     transition: all 0.3s ease;
 
-    &.right, &.right-top {
+    &.dx-alignment-right {
+        right: 0;
+        left: auto;
+    }
+
+    &.dx-alignment-right-top {
         right: 0;
         left: auto;
     }
 }
 
-
-
 .dx-texteditor-with-label {
     .dx-texteditor-label {
-        &.left, &.right {
+        &.dx-alignment-left, &.dx-alignment-right {
             position: static;
             z-index: 0;
         }
 
-        &.right-top, &.left-top {
+        &.dx-alignment-right-top, &.dx-alignment-left-top {
             width: auto;
 
             + .dx-texteditor-base-container input {
@@ -238,7 +241,7 @@
 
     &.dx-state-focused, &:not(.dx-texteditor-empty) {
         .dx-texteditor-label {
-            &.right-top,&.left-top {
+            &.dx-alignment-right-top, &.dx-alignment-left-top {
                 padding-top: 3px;
                 font-size: 12px;
             }

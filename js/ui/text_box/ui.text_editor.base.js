@@ -61,6 +61,8 @@ var CONTROL_KEYS = [
     "Down"
 ];
 
+var labelAlignments = ["left", "left top", "right", "right top"];
+
 /**
 * @name dxTextEditor
 * @inherits Editor
@@ -514,14 +516,41 @@ var TextEditorBase = Editor.inherit({
         return alignmentString.indexOf("top") >= 0;
     },
 
-    getInputId: function() {
+    _getInputId: function() {
         return this._inputId || this._input().attr("id");
     },
 
-    generateInputId: function() {
+    _generateInputId: function() {
         var newId = "dx-" + new Guid();
         this._inputId = newId;
         return newId;
+    },
+
+    _validateLabelAlignment: function(alignmentValue) {
+        var result;
+
+        if(alignmentValue) {
+            result = alignmentValue.trim();
+        }
+
+        if(labelAlignments.indexOf(alignmentValue) === -1) {
+            result = undefined;
+        }
+
+        if(!result) {
+            if(this.option("rtlEnabled")) {
+                result = "right top";
+            } else {
+                result = "left top";  // extract default alignment, validate alignment value
+            }
+
+        }
+
+        if(themes.isMaterial() && (result === "left" || result === "right")) {
+            result += " top";
+        }
+
+        return result;
     },
 
     _renderLabel: function() {
@@ -532,24 +561,17 @@ var TextEditorBase = Editor.inherit({
                 labelData = { text: labelData };
             } else if(typeof labelData !== "object" || labelData.text === undefined) {
                 // error: unexpected value
-
+                return;
             }
 
-            if(!labelData.alignment) {
-                if(this.option("rtlEnabled")) {
-                    labelData.alignment = "right top";
-                } else {
-                    labelData.alignment = "left top";  // extract default alignment, validate alignment value
-                }
-
-            }
+            labelData.alignment = this._validateLabelAlignment(labelData.alignment);
 
 
             var $input = this._input();
 
-            var alignmentClass = labelData.alignment.replace(" ", "-");
+            var alignmentClass = "dx-alignment-" + labelData.alignment.replace(" ", "-");
 
-            var id = this.getInputId() || this.generateInputId();
+            var id = this._getInputId() || this._generateInputId();
             $input.attr("id", id);
 
             var $label = $('<label>')
@@ -558,7 +580,7 @@ var TextEditorBase = Editor.inherit({
                 .attr("for", id)
                 .text(labelData.text);
 
-            $label.insertBefore(this.$element().find("." + TEXTEDITOR_BASE_CONTAINER_CLASS));  // extract element
+            $label.prependTo(this.$element());
 
             this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
 
