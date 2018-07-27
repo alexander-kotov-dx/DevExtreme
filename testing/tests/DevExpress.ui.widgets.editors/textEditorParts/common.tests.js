@@ -17,7 +17,9 @@ var TEXTEDITOR_CLASS = "dx-texteditor",
     STATE_FOCUSED_CLASS = "dx-state-focused",
     EMPTY_INPUT_CLASS = "dx-texteditor-empty",
     CLEAR_BUTTON_SELECTOR = ".dx-clear-button-area",
-    PLACEHOLDER_CLASS = "dx-placeholder";
+    PLACEHOLDER_CLASS = "dx-placeholder",
+    TEXTEDITOR_LABEL_CLASS = "dx-texteditor-label",
+    TEXTEDITOR_WITH_LABEL_CLASS = "dx-texteditor-with-label";
 
 var EVENTS = [
     "FocusIn", "FocusOut",
@@ -190,6 +192,40 @@ QUnit.testInActiveWindow("placeholder pointerup event (T181734)", function(asser
 
     $placeholder.trigger("dxpointerup");
     assert.ok($input.is(":focus"), "input get focus on pointerup (needed for win8 native app)");
+});
+
+QUnit.testInActiveWindow("render label", function(assert) {
+    var $element = $("#texteditor").dxTextEditor({
+        label: "name"
+    });
+
+    var $label = $element.find("." + TEXTEDITOR_LABEL_CLASS);
+
+    assert.ok($element.find("." + TEXTEDITOR_CLASS + "." + TEXTEDITOR_WITH_LABEL_CLASS).length === 1, "texteditor has a 'with-label' class");
+    assert.ok($label.length === 1, "label element exists");
+    assert.equal($label.text(), "name", "label element has right text");
+    assert.ok($label.hasClass("dx-alignment-left-top"), "name", "label element has alignment class");
+});
+
+QUnit.testInActiveWindow("render label runtime", function(assert) {
+    var $element = $("#texteditor").dxTextEditor({}),
+        instance = $element.dxTextEditor("instance");
+
+    assert.ok($element.find("." + TEXTEDITOR_CLASS + "." + TEXTEDITOR_WITH_LABEL_CLASS).length === 1, "texteditor hasn't a 'with-label' class by default");
+    assert.ok($element.find("." + TEXTEDITOR_LABEL_CLASS).length === 1, "label element does not exist by default");
+
+    instance.option("label", { text: "name", alignment: "right" });
+    var $label = $element.find("." + TEXTEDITOR_LABEL_CLASS);
+
+    assert.ok($element.find("." + TEXTEDITOR_CLASS + "." + TEXTEDITOR_WITH_LABEL_CLASS).length === 1, "texteditor hasn't a 'with-label' class");
+    assert.ok($label.length === 1, "label element exists");
+    assert.ok($label.hasClass("dx-alignment-right"), "label element has new alignment class");
+
+    instance.option("label", { text: "name", alignment: "left" });
+
+    assert.notOk($label.hasClass("dx-alignment-left-top"), "label element hasn't default alignment class");
+    assert.notOk($label.hasClass("dx-alignment-right"), "label element hasn't old alignment class");
+    assert.ok($label.hasClass("dx-alignment-left"), "label element has new alignment class");
 });
 
 QUnit.testInActiveWindow("input is focused after click on the 'clear' button", function(assert) {
