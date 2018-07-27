@@ -39,6 +39,7 @@
 }
 
 .dx-texteditor-container {
+    position: relative;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -98,20 +99,17 @@
     }
 }
 
-.dx-texteditor-base-container {
-    position: relative;
-}
-
 .dx-texteditor-with-label {
     display: flex;
     flex-wrap: wrap;
 
 
-    .dx-texteditor-base-container {
+    .dx-texteditor-container {
         flex-shrink: 1;
         flex-grow: 1;
         flex-basis: auto;
         order: 1;
+        width: auto;
     }
 
     .dx-texteditor-label {

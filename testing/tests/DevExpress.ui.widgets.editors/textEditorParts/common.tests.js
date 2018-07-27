@@ -201,7 +201,7 @@ QUnit.testInActiveWindow("render label", function(assert) {
 
     var $label = $element.find("." + TEXTEDITOR_LABEL_CLASS);
 
-    assert.ok($element.find("." + TEXTEDITOR_CLASS + "." + TEXTEDITOR_WITH_LABEL_CLASS).length === 1, "texteditor has a 'with-label' class");
+    assert.ok($element.hasClass(TEXTEDITOR_WITH_LABEL_CLASS), "texteditor has a 'with-label' class");
     assert.ok($label.length === 1, "label element exists");
     assert.equal($label.text(), "name", "label element has right text");
     assert.ok($label.hasClass("dx-alignment-left-top"), "name", "label element has alignment class");
@@ -211,17 +211,19 @@ QUnit.testInActiveWindow("render label runtime", function(assert) {
     var $element = $("#texteditor").dxTextEditor({}),
         instance = $element.dxTextEditor("instance");
 
-    assert.ok($element.find("." + TEXTEDITOR_CLASS + "." + TEXTEDITOR_WITH_LABEL_CLASS).length === 1, "texteditor hasn't a 'with-label' class by default");
-    assert.ok($element.find("." + TEXTEDITOR_LABEL_CLASS).length === 1, "label element does not exist by default");
+    assert.ok(!$element.hasClass(TEXTEDITOR_WITH_LABEL_CLASS), "texteditor hasn't a 'with-label' class by default");
+    assert.ok($element.find("." + TEXTEDITOR_LABEL_CLASS).length === 0, "label element does not exist by default");
 
     instance.option("label", { text: "name", alignment: "right" });
     var $label = $element.find("." + TEXTEDITOR_LABEL_CLASS);
 
-    assert.ok($element.find("." + TEXTEDITOR_CLASS + "." + TEXTEDITOR_WITH_LABEL_CLASS).length === 1, "texteditor hasn't a 'with-label' class");
+    assert.ok($element.hasClass(TEXTEDITOR_WITH_LABEL_CLASS), "texteditor has a 'with-label' class");
     assert.ok($label.length === 1, "label element exists");
     assert.ok($label.hasClass("dx-alignment-right"), "label element has new alignment class");
 
     instance.option("label", { text: "name", alignment: "left" });
+
+    $label = $element.find("." + TEXTEDITOR_LABEL_CLASS);
 
     assert.notOk($label.hasClass("dx-alignment-left-top"), "label element hasn't default alignment class");
     assert.notOk($label.hasClass("dx-alignment-right"), "label element hasn't old alignment class");

@@ -20,7 +20,6 @@ var TEXTEDITOR_CLASS = "dx-texteditor",
     TEXTEDITOR_INPUT_CLASS = "dx-texteditor-input",
     TEXTEDITOR_INPUT_SELECTOR = "." + TEXTEDITOR_INPUT_CLASS,
     TEXTEDITOR_CONTAINER_CLASS = "dx-texteditor-container",
-    TEXTEDITOR_BASE_CONTAINER_CLASS = "dx-texteditor-base-container",
     TEXTEDITOR_BUTTONS_CONTAINER_CLASS = "dx-texteditor-buttons-container",
     TEXTEDITOR_PLACEHOLDER_CLASS = "dx-placeholder",
     TEXTEDITOR_LABEL_CLASS = "dx-texteditor-label",
@@ -352,14 +351,10 @@ var TextEditorBase = Editor.inherit({
     },
 
     _renderInput: function() {
-        var $baseContainer = $("<div>").addClass(TEXTEDITOR_BASE_CONTAINER_CLASS);  // try to rid of this element
-
         $("<div>").addClass(TEXTEDITOR_CONTAINER_CLASS)
             .append(this._createInput())
             .append($("<div>").addClass(TEXTEDITOR_BUTTONS_CONTAINER_CLASS))
-            .appendTo($baseContainer);
-
-        this.$element().append($baseContainer);
+            .appendTo(this.$element());
     },
 
     _createInput: function() {
@@ -519,6 +514,10 @@ var TextEditorBase = Editor.inherit({
         return alignmentString.indexOf("top") >= 0;
     },
 
+    _label: function() {
+        return this._$label || $();
+    },
+
     _getInputId: function() {
         return this._inputId || this._input().attr("id");
     },
@@ -558,9 +557,9 @@ var TextEditorBase = Editor.inherit({
     _prepareLabelValue: function(label) {
         var result = label;
 
-        if(typeof result === "string") {
+        if(typeof result === "string" && result.length > 0) {
             result = { text: result };
-        } else if(typeof result !== "object" || label.text === undefined) {
+        } else if(typeof result !== "object" || !label.text) {
             result = null;
         }
 
@@ -568,6 +567,11 @@ var TextEditorBase = Editor.inherit({
     },
 
     _renderLabel: function() {
+        if(this._$label) {
+            this._$label.remove();
+            this._$label = null;
+        }
+
         var labelData = this._prepareLabelValue(this.option("label"));
 
         if(labelData) {
@@ -579,13 +583,12 @@ var TextEditorBase = Editor.inherit({
 
             $input.attr("id", id);
 
-            var $label = $('<label>')
+            this._$label = $('<label>')
                 .addClass(TEXTEDITOR_LABEL_CLASS)
                 .addClass(alignmentClass)
                 .attr("for", id)
-                .text(labelData.text);
-
-            $label.prependTo(this.$element());
+                .text(labelData.text)
+                .prependTo(this.$element());
 
             this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
         } else {

@@ -121,7 +121,7 @@
 .dx-invalid.dx-texteditor {
 
     &.dx-state-hover {
-        .dx-texteditor-base-container {
+        .dx-texteditor-container {
             &:after {
                 border-bottom: 1px solid @texteditor-invalid-faded-border-color;
             }
@@ -129,7 +129,7 @@
     }
 
     &.dx-state-focused, &.dx-state-active {
-        .dx-texteditor-base-container {
+        .dx-texteditor-container {
             &:before {
                 border-top: 1px solid @texteditor-invalid-focused-border-color;
                 border-bottom: 1px solid @texteditor-invalid-focused-border-color;
@@ -146,7 +146,7 @@
     }
 }
 
-.dx-texteditor-base-container {
+.dx-texteditor-container {
     background-color: @texteditor-bg;
 
     .dx-texteditor-borders-position() {
@@ -220,7 +220,7 @@
         &.dx-alignment-right-top, &.dx-alignment-left-top {
             width: auto;
 
-            + .dx-texteditor-base-container input {
+            + .dx-texteditor-container input {
                 padding-top: @MATERIAL_TEXTEDITOR_INPUT_TOP_PADDING + 4px;
                 padding-bottom: @MATERIAL_TEXTEDITOR_INPUT_BOTTOM_PADDING - 4px;
 
@@ -230,7 +230,7 @@
             }
 
             .dx-texteditor-empty:not(.dx-state-focused)& {
-                + .dx-texteditor-base-container {
+                + .dx-texteditor-container {
                     .dx-placeholder {
                         display: none;
                     }
