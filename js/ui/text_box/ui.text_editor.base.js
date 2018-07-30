@@ -351,7 +351,7 @@ var TextEditorBase = Editor.inherit({
     },
 
     _renderInput: function() {
-        $("<div>").addClass(TEXTEDITOR_CONTAINER_CLASS)
+        this._textEditorContainer = $("<div>").addClass(TEXTEDITOR_CONTAINER_CLASS)
             .append(this._createInput())
             .append($("<div>").addClass(TEXTEDITOR_BUTTONS_CONTAINER_CLASS))
             .appendTo(this.$element());
@@ -840,6 +840,20 @@ var TextEditorBase = Editor.inherit({
     _renderInputType: function() {
         // B218621, B231875
         this._setInputType(this.option("mode"));
+    },
+
+    _renderDimensions: function() {
+        this.callBase();
+
+        var $element = this.$element(),
+            heightValue = this._getOptionValue("height");
+
+        if(heightValue && this._getOptionValue("label")) {
+            $element.css("height", "auto");
+            if(this._textEditorContainer) {
+                this._textEditorContainer.css("height", heightValue);
+            }
+        }
     },
 
     _setInputType: function(type) {

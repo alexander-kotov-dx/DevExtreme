@@ -8,7 +8,8 @@ var TEXTEDITOR_CLASS = "dx-texteditor",
     INPUT_CLASS = "dx-texteditor-input",
     CONTAINER_CLASS = "dx-texteditor-container",
     PLACEHOLDER_CLASS = "dx-placeholder",
-    STATE_INVISIBLE_CLASS = "dx-state-invisible";
+    STATE_INVISIBLE_CLASS = "dx-state-invisible",
+    TEXTEDITOR_LABEL_CLASS = "dx-texteditor-label";
 
 QUnit.module("Basic markup");
 
@@ -20,6 +21,7 @@ QUnit.test("basic init", function(assert) {
     assert.equal(element.find("." + PLACEHOLDER_CLASS).length, 1);
     assert.equal(element.find("." + INPUT_CLASS).length, 1);
     assert.equal(element.find("." + CONTAINER_CLASS).length, 1);
+    assert.equal(element.find("." + TEXTEDITOR_LABEL_CLASS).length, 0);
 });
 
 QUnit.test("init with placeholder", function(assert) {
