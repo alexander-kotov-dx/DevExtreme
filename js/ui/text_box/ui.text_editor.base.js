@@ -572,27 +572,32 @@ var TextEditorBase = Editor.inherit({
             this._$label = null;
         }
 
-        var labelData = this._prepareLabelValue(this.option("label"));
+        var labelData = this._prepareLabelValue(this.option("label")),
+            $element = this.$element(),
+            alignmentClassPrefix = "dx-label-alignment-";
+
+        $element.attr("class", $element.attr("class").replace(new RegExp(alignmentClassPrefix + "-[^\s]+"), ""));
 
         if(labelData) {
             labelData.alignment = this._validateLabelAlignment(labelData.alignment);
 
             var $input = this._input(),
-                alignmentClass = "dx-alignment-" + labelData.alignment.replace(" ", "-"),
+                alignmentClass = alignmentClassPrefix + labelData.alignment.replace(" ", "-"),
                 id = this._getInputId() || this._generateInputId();
 
             $input.attr("id", id);
 
             this._$label = $('<label>')
                 .addClass(TEXTEDITOR_LABEL_CLASS)
-                .addClass(alignmentClass)
+                // .addClass()
                 .attr("for", id)
                 .text(labelData.text)
-                .prependTo(this.$element());
+                .prependTo($element);
 
-            this.$element().addClass(TEXTEDITOR_WITH_LABEL_CLASS);
+            $element.addClass(TEXTEDITOR_WITH_LABEL_CLASS);
+            $element.addClass(alignmentClass);
         } else {
-            this.$element().removeClass(TEXTEDITOR_WITH_LABEL_CLASS);
+            $element.removeClass(TEXTEDITOR_WITH_LABEL_CLASS);
         }
     },
 

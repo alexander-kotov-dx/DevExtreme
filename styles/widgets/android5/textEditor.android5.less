@@ -161,16 +161,20 @@
     color: @ANDROID5_TEXTEDITOR_INPUT_COLOR;
 }
 
-.dx-texteditor-label {
-    &.dx-alignment-left, &.dx-alignment-right {
+.dx-label-alignment-left, .dx-label-alignment-right {
+    .dx-texteditor-label {
         margin-top: 12px;
     }
+}
 
-    &.dx-alignment-left {
+.dx-label-alignment-left {
+    .dx-texteditor-label {
         margin-right: 8px;
     }
+}
 
-    &.dx-alignment-right {
+.dx-label-alignment-right {
+    .dx-texteditor-label {
         margin-left: 8px;
     }
 }
@@ -194,13 +198,15 @@
         }
     }
 
-    .dx-texteditor-label {
-        &.dx-alignment-left {
+    .dx-label-alignment-left {
+        .dx-texteditor-label {
             margin-right: 0;
             margin-left: 8px;
         }
+    }
     
-        &.dx-alignment-right {
+    &.dx-label-alignment-right {
+        .dx-texteditor-label {
             margin-right: 8px;
             margin-left: 0;
         }

@@ -599,13 +599,27 @@ var LayoutManager = Widget.inherit({
             labelOptions = that._getLabelOptions(item, id, isRequired),
             $editor = $("<div>"),
             helpID = item.helpText ? ("dx-" + new Guid()) : null,
+            widgetLabelOptions,
             $label;
 
         this._addItemClasses($container, item.col);
         $container.addClass(isRequired ? FIELD_ITEM_REQUIRED_CLASS : FIELD_ITEM_OPTIONAL_CLASS);
 
-        if(labelOptions.visible && labelOptions.text) {
+        /* if(labelOptions.visible && labelOptions.text) {
             $label = that._renderLabel(labelOptions).appendTo($container);
+        }*/
+
+        if(labelOptions.visible && labelOptions.text) {  // check the widget supports label option
+            var location = labelOptions.location;
+
+            if(location === "top") {   // to refactor
+                location = "left top";
+            }
+
+            widgetLabelOptions = {
+                alignment: location,
+                text: labelOptions.text
+            };
         }
 
         if(item.itemType === SIMPLE_ITEM_TYPE) {
@@ -618,7 +632,7 @@ var LayoutManager = Widget.inherit({
         $editor.data("dx-form-item", item);
         that._appendEditorToField({
             $fieldItem: $container,
-            $label: $label,
+            // $label: $label,
             $editor: $editor,
             labelOptions: labelOptions
         });
@@ -633,6 +647,7 @@ var LayoutManager = Widget.inherit({
             isRequired: isRequired,
             helpID: helpID,
             id: id,
+            label: widgetLabelOptions,
             validationBoundary: that.option("validationBoundary")
         });
 
@@ -765,6 +780,7 @@ var LayoutManager = Widget.inherit({
             inputAttr: {
                 id: options.id
             },
+            label: options.label,
             validationBoundary: options.validationBoundary
         });
 

@@ -313,7 +313,7 @@ QUnit.test("render label", function(assert) {
     assert.ok($element.hasClass(TEXTEDITOR_WITH_LABEL_CLASS), "texteditor has a 'with-label' class");
     assert.ok($label.length === 1, "label element exists");
     assert.equal($label.text(), "name", "label element has right text");
-    assert.ok($label.hasClass("dx-alignment-left-top"), "name", "label element has alignment class");
+    assert.ok($label.hasClass("dx-label-alignment-left-top"), "name", "label element has alignment class");
 });
 
 QUnit.test("change label runtime", function(assert) {
@@ -328,15 +328,15 @@ QUnit.test("change label runtime", function(assert) {
 
     assert.ok($element.hasClass(TEXTEDITOR_WITH_LABEL_CLASS), "texteditor has a 'with-label' class");
     assert.ok($label.length === 1, "label element exists");
-    assert.ok($label.hasClass("dx-alignment-right"), "label element has new alignment class");
+    assert.ok($label.hasClass("dx-label-alignment-right"), "label element has new alignment class");
 
     instance.option("label", { text: "name", alignment: "left" });
 
     $label = $element.find("." + TEXTEDITOR_LABEL_CLASS);
 
-    assert.notOk($label.hasClass("dx-alignment-left-top"), "label element hasn't default alignment class");
-    assert.notOk($label.hasClass("dx-alignment-right"), "label element hasn't old alignment class");
-    assert.ok($label.hasClass("dx-alignment-left"), "label element has new alignment class");
+    assert.notOk($label.hasClass("dx-label-alignment-left-top"), "label element hasn't default alignment class");
+    assert.notOk($label.hasClass("dx-label-alignment-right"), "label element hasn't old alignment class");
+    assert.ok($label.hasClass("dx-label-alignment-left"), "label element has new alignment class");
 });
 
 QUnit.test("dxTextEditor with height option and label option should have height style on the texteditor container", function(assert) {
@@ -372,14 +372,14 @@ QUnit.test("dxTextEditor with label has left-top or right-top label alignment cl
         }),
         textEditor = $textEditor.dxTextEditor("instance");
 
-    assert.ok($textEditor.find("." + TEXTEDITOR_LABEL_CLASS).hasClass("dx-alignment-left-top"), "label has left-top alignment class");
+    assert.ok($textEditor.find("." + TEXTEDITOR_LABEL_CLASS).hasClass("dx-label-alignment-left-top"), "label has left-top alignment class");
 
     textEditor.option("label", {
         text: "right",
         alignment: "right"
     });
 
-    assert.ok($textEditor.find("." + TEXTEDITOR_LABEL_CLASS).hasClass("dx-alignment-right-top"), "label has right-top alignment class");
+    assert.ok($textEditor.find("." + TEXTEDITOR_LABEL_CLASS).hasClass("dx-label-alignment-right-top"), "label has right-top alignment class");
 
     themes.isMaterial = origIsMaterial;
 });

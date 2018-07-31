@@ -7,6 +7,10 @@
 
     .dx-invalid-message.dx-overlay {
         flex-basis: 100%;
+        //position: absolute;
+        //width: 100%;
+        /*left: 0;*/
+        //right: 0; // add rtl
     }
 }
 
@@ -103,33 +107,44 @@
     display: flex;
     flex-wrap: wrap;
 
-
-    .dx-texteditor-container {
+    .dx-texteditor-container, .dx-dropdowneditor-input-wrapper {
         flex-shrink: 1;
         flex-grow: 1;
-        flex-basis: auto;
+        flex-basis: 100%;
         order: 1;
-        width: auto;
     }
 
     .dx-texteditor-label {
         flex-basis: auto;
+        white-space: nowrap;
+    }
+}
 
-        &.dx-alignment-left-top, &.dx-alignment-right-top {
-            width: 100%;
-        }
+.dx-label-alignment-left, .dx-label-alignment-right {
+    flex-wrap: nowrap;
+}
 
-        &.dx-alignment-left {
-            order: 0;
-        }
+.dx-label-alignment-left-top, .dx-label-alignment-right-top {
+    .dx-texteditor-label {
+        width: 100%;
+    }
+}
 
-        &.dx-alignment-right {
-            order: 2;
-        }
+.dx-label-alignment-left {
+    .dx-texteditor-label {
+        order: 0;
+    }
+}
 
-        &.dx-alignment-right, &.dx-alignment-right-top {
-            text-align: right;
-        }
+.dx-label-alignment-right {
+    .dx-texteditor-label {
+        order: 2;
+    }
+}
+
+.dx-label-alignment-right, .dx-label-alignment-right-top {
+    .dx-texteditor-label {
+        text-align: right;
     }
 }
 

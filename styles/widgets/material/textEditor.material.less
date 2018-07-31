@@ -190,64 +190,54 @@
 }
 
 .dx-texteditor-label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: @texteditor-placeholder-color;
-    font-size: 16px;
-    z-index: -1;
     padding: @MATERIAL_TEXTEDITOR_INPUT_PADDING;
-    transition: all 0.3s ease;
+}
 
-    &.dx-alignment-right {
-        right: 0;
-        left: auto;
-    }
-
-    &.dx-alignment-right-top {
+.dx-label-alignment-right-top {
+    .dx-texteditor-label {
         right: 0;
         left: auto;
     }
 }
 
-.dx-texteditor-with-label {
+.dx-label-alignment-left-top, .dx-label-alignment-right-top {
     .dx-texteditor-label {
-        &.dx-alignment-left, &.dx-alignment-right {
-            position: static;
-            z-index: 0;
-        }
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: @texteditor-placeholder-color;
+        font-size: 16px;
+        z-index: -1;
+        transition: all 0.3s ease;
+        width: auto;
 
-        &.dx-alignment-right-top, &.dx-alignment-left-top {
-            width: auto;
+        + .dx-texteditor-container input {
+            padding-top: @MATERIAL_TEXTEDITOR_INPUT_TOP_PADDING + 4px;
+            padding-bottom: @MATERIAL_TEXTEDITOR_INPUT_BOTTOM_PADDING - 4px;
 
-            + .dx-texteditor-container input {
-                padding-top: @MATERIAL_TEXTEDITOR_INPUT_TOP_PADDING + 4px;
-                padding-bottom: @MATERIAL_TEXTEDITOR_INPUT_BOTTOM_PADDING - 4px;
-
-                + .dx-placeholder {
-                    padding-top: 4px;
-                }
-            }
-
-            .dx-texteditor-empty:not(.dx-state-focused)& {
-                + .dx-texteditor-container {
-                    .dx-placeholder {
-                        display: none;
-                    }
-                }
+            + .dx-placeholder {
+                padding-top: 4px;
             }
         }
     }
 
     &.dx-state-focused, &:not(.dx-texteditor-empty) {
         .dx-texteditor-label {
-            &.dx-alignment-right-top, &.dx-alignment-left-top {
-                padding-top: 3px;
-                font-size: 12px;
-            }
+            padding-top: 3px;
+            font-size: 12px;
         }
     }
+}
 
+.dx-texteditor-empty:not(.dx-state-focused) {
+    &.dx-label-alignment-right-top, &.dx-label-alignment-left-top {
+        .dx-placeholder {
+            display: none;
+        }
+    }
+}
+
+.dx-texteditor-with-label {
     &.dx-state-focused {
         .dx-texteditor-label {
             color: @base-accent;
