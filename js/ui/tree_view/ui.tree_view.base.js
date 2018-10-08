@@ -727,7 +727,7 @@ var TreeViewBase = HierarchicalCollectionWidget.inherit({
     },
 
     _getAccessors: function() {
-        return ["key", "display", "selected", "expanded", "items", "parentId", "disabled", "hasItems"];
+        return ["key", "display", "selected", "expanded", "items", "parentId", "disabled", "hasItems", "$node"];
     },
 
     _getDataAdapterOptions: function() {
@@ -818,6 +818,8 @@ var TreeViewBase = HierarchicalCollectionWidget.inherit({
             "expanded": node.internalFields.expanded || false,
             "level": this._getLevel($nodeContainer)
         }, $node);
+
+        node.internalFields.$node = $node;
 
         return $node;
     },
@@ -1633,22 +1635,22 @@ var TreeViewBase = HierarchicalCollectionWidget.inherit({
     _toggleHasSelectedChildClasses: function() {
         var oldHasSelectedChildNodeKeys = this._getHasSelectedChildNodes(),
             newHasSelectedChildNodeKeys = this._getHasSelectedChildNodes(true),
-            that = this,
-            node,
-            $node;
+            that = this;
 
         each(oldHasSelectedChildNodeKeys, function(_, key) {
-            node = that._dataAdapter.getNodeByKey(key);
+            var node = that._dataAdapter.getNodeByKey(key);
             if(node) {
-                $node = that._getNodeElement(node);
-                that._toggleHasSelectedChildClass($node, false);
+                var $node = node.internalFields.$node;
+                $node && that._toggleHasSelectedChildClass($node, false);
             }
         });
 
 
         each(newHasSelectedChildNodeKeys, function(_, key) {
-            var $node = that._getNodeElement(that._dataAdapter.getNodeByKey(key));
-            that._toggleHasSelectedChildClass($node, true);
+            var node = that._dataAdapter.getNodeByKey(key),
+                $node = node.internalFields.$node;
+
+            $node && that._toggleHasSelectedChildClass($node, true);
         });
     },
 

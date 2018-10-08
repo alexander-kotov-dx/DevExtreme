@@ -483,9 +483,10 @@ var CollectionWidget = BaseCollectionWidget.inherit({
             return;
         }
 
-        var $itemElement = $(args.itemElement);
+        var $itemElement = $(args.itemElement),
+            itemIndex = this._editStrategy.getIndexByItemData(args.itemData);
 
-        if(this._isItemSelected(this._editStrategy.getNormalizedIndex($itemElement))) {
+        if(this._isItemSelected(this._editStrategy.getNormalizedIndex(itemIndex))) {
             $itemElement.addClass(this._selectedItemClass());
             this._setAriaSelected($itemElement, "true");
         } else {
