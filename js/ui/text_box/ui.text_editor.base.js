@@ -386,10 +386,13 @@ var TextEditorBase = Editor.inherit({
     _renderInput: function() {
         const buttons = this.option("buttons");
 
+        this.$beforeButtonsContainer = this._buttonCollection.renderBeforeButtons(buttons);
+        this.$afterButtonsContainer = this._buttonCollection.renderAfterButtons(buttons);
+
         $("<div>").addClass(TEXTEDITOR_CONTAINER_CLASS)
-            .append(this._buttonCollection.renderBeforeButtons(buttons))
+            .append(this.$beforeButtonsContainer)
             .append(this._createInput())
-            .append(this._buttonCollection.renderAfterButtons(buttons))
+            .append(this.$afterButtonsContainer)
             .appendTo(this.$element());
     },
 
@@ -421,6 +424,10 @@ var TextEditorBase = Editor.inherit({
 
     _renderValue: function() {
         this._renderInputValue();
+        this._renderInputAddons();
+    },
+
+    _renderInputAddons: function() {
     },
 
     _renderInputValue: function(value) {

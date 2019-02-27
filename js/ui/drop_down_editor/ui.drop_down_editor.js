@@ -355,15 +355,22 @@ var DropDownEditor = TextBox.inherit({
         return true;
     },
 
+    _renderInputAddons: function() {
+        this._renderField();
+    },
+
     _renderTemplatedField: function(fieldTemplate, data) {
         var isFocused = focused(this._input());
         var $container = this._$container;
 
         this._disposeKeyboardProcessor();
 
+        // NOTE: to prevent buttons disposition
+        this.$beforeButtonsContainer && this.$beforeButtonsContainer[0].parentNode.removeChild(this.$beforeButtonsContainer[0]);
+        this.$afterButtonsContainer && this.$afterButtonsContainer[0].parentNode.removeChild(this.$afterButtonsContainer[0]);
         $container.empty();
 
-        fieldTemplate.render({
+        const $result = fieldTemplate.render({
             model: data,
             container: domUtils.getPublicElement($container),
             onRendered: () => {
@@ -378,18 +385,13 @@ var DropDownEditor = TextBox.inherit({
                 isFocused && eventsEngine.trigger(this._input(), "focus");
             }
         });
+
+        this.$beforeButtonsContainer && this.$beforeButtonsContainer.insertBefore($result);
+        this.$afterButtonsContainer && this.$afterButtonsContainer.insertAfter($result);
     },
 
     _fieldRenderData: function() {
         return this.option("value");
-    },
-
-    _renderValue: function() {
-        const isFieldTemplateRendered = this._renderField();
-
-        if(!isFieldTemplateRendered) {
-            this.callBase.apply(this, arguments);
-        }
     },
 
     _initTemplates: function() {

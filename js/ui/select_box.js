@@ -432,6 +432,8 @@ var SelectBox = DropDownList.inherit({
     },
 
     _renderInputValueImpl: function() {
+        this._renderField();
+
         return new Deferred().resolve();
     },
 
@@ -534,6 +536,8 @@ var SelectBox = DropDownList.inherit({
             this._renderDisplayText(this._displayGetter(item));
             return;
         }
+
+        this._renderField();
     },
 
     _getSelectionChangeHandler: function() {
