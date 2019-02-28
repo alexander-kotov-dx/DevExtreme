@@ -397,6 +397,7 @@ var TextEditorBase = Editor.inherit({
     },
 
     _clean() {
+        this.callBase();
         this._buttonCollection.clean();
         this.callBase();
     },
