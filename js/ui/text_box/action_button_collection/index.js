@@ -1,4 +1,6 @@
 import $ from "../../../core/renderer";
+import CustomButton from "./custom";
+import { extend } from "../../../core/utils/extend";
 import { find } from "../../../core/utils/array";
 
 const TEXTEDITOR_BUTTONS_CONTAINER_CLASS = "dx-texteditor-buttons-container";
@@ -10,45 +12,56 @@ export default class ActionButtonCollection {
         this.editor = editor;
     }
 
-    _createButton(buttonName) {
-        const defaultButtonInfo = find(this.defaultButtonsInfo, ({ name }) => name === buttonName);
+    _compileButtonInfo(buttons) {
+        return buttons.map((button) => {
+            const isDefaultButton = typeof button === "string";
 
-        if(!defaultButtonInfo) {
-            throw "Can't create custom action button";
-        }
+            if(isDefaultButton) {
+                const defaultButtonInfo = find(this.defaultButtonsInfo, ({ name }) => name === button);
 
-        const { Ctor } = defaultButtonInfo;
-        const button = new Ctor(this.editor, {});
+                if(!defaultButtonInfo) {
+                    throw "Unknown default button";
+                }
+
+                return defaultButtonInfo;
+            } else {
+                return extend(button, { Ctor: CustomButton });
+            }
+        });
+    }
+
+    _createButton(buttonsInfo) {
+        const { Ctor, options, name } = buttonsInfo;
+        const button = new Ctor(name, this.editor, options);
 
         this.buttons.push(button);
 
         return button;
     }
 
-    _renderButtons(buttons, $container, location) {
-        let $buttonsContainer = $buttonsContainer = $("<div>")
-            .addClass(TEXTEDITOR_BUTTONS_CONTAINER_CLASS)
-            .appendTo($container);
+    _getLocation(buttonInfo) {
+        return buttonInfo.Ctor.location;
+    }
 
-        if(!buttons) {
-            buttons = this.defaultButtonsInfo.map(({ name }) => name);
-        }
+    _renderButtons(buttons, $container, targetLocation) {
+        let $buttonsContainer = null;
+        const buttonsInfo = buttons ? this._compileButtonInfo(buttons) : this.defaultButtonsInfo;
+        const getButtonsContainer = () => {
+            $buttonsContainer = $buttonsContainer || $("<div>")
+                .addClass(TEXTEDITOR_BUTTONS_CONTAINER_CLASS)
+                .appendTo($container);
 
-        buttons.forEach(buttonName => {
-            let button = find(this.buttons, ({ name }) => name === buttonName);
+            return $buttonsContainer;
+        };
 
-            button = button || this._createButton(buttonName);
+        buttonsInfo.forEach((buttonsInfo) => {
+            const { location = "after" } = buttonsInfo;
 
-            if(button.location === location) {
-                button.render($buttonsContainer);
+            if(location === targetLocation) {
+                this._createButton(buttonsInfo)
+                    .render(getButtonsContainer());
             }
         });
-
-        if(!$buttonsContainer.children().length) {
-            $buttonsContainer.remove();
-
-            return null;
-        }
 
         return $buttonsContainer;
     }
