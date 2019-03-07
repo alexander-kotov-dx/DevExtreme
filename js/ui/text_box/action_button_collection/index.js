@@ -5,6 +5,55 @@ import { find } from "../../../core/utils/array";
 
 const TEXTEDITOR_BUTTONS_CONTAINER_CLASS = "dx-texteditor-buttons-container";
 
+function checkButtonInfo(buttonInfo) {
+    const checkButtonType = () => {
+        if(!buttonInfo || typeof buttonInfo !== "object" || Array.isArray(buttonInfo)) {
+            throw new TypeError("'buttons' option must include an object or a string items only");
+        }
+    };
+
+    const checkLocation = () => {
+        const { location } = buttonInfo;
+
+        if("location" in buttonInfo && location !== "after" && location !== "before") {
+            throw new TypeError("action button's 'location' property can be 'after' or 'before' only");
+        }
+    };
+
+    const checkNameIsDefined = () => {
+        if(!("name" in buttonInfo)) {
+            throw new Error("action button must have a name");
+        }
+    };
+
+    const checkNameIsString = () => {
+        const { name } = buttonInfo;
+
+        if(typeof name !== "string") {
+            throw new TypeError("action button's 'name' field must be a string");
+        }
+    };
+
+    checkButtonType();
+    checkNameIsDefined();
+    checkNameIsString();
+    checkLocation();
+}
+
+function checkNamesUniqueness(existingNames, newName) {
+    if(existingNames.indexOf(newName) !== -1) {
+        throw new Error("'buttons' option item must have unique name");
+    }
+
+    existingNames.push(newName);
+}
+
+function checkPredefinedButtonName(name, predefinedButtonsInfo) {
+    if(find(predefinedButtonsInfo, (info) => info.name === name)) {
+        throw new Error(`'${name}' name reserved for the predefined action button`);
+    }
+}
+
 export default class ActionButtonCollection {
     constructor(editor, defaultButtonsInfo) {
         this.buttons = [];
@@ -13,6 +62,8 @@ export default class ActionButtonCollection {
     }
 
     _compileButtonInfo(buttons) {
+        const names = [];
+
         return buttons.map((button) => {
             const isDefaultButton = typeof button === "string";
 
@@ -20,11 +71,20 @@ export default class ActionButtonCollection {
                 const defaultButtonInfo = find(this.defaultButtonsInfo, ({ name }) => name === button);
 
                 if(!defaultButtonInfo) {
-                    throw "Unknown default button";
+                    throw new Error(`editor does not have '${button}' action button`);
                 }
+
+                checkNamesUniqueness(names, button);
 
                 return defaultButtonInfo;
             } else {
+                checkButtonInfo(button);
+
+                const { name } = button;
+
+                checkNamesUniqueness(names, name);
+                checkPredefinedButtonName(name, this.defaultButtonsInfo);
+
                 return extend(button, { Ctor: CustomButton });
             }
         });
@@ -74,11 +134,7 @@ export default class ActionButtonCollection {
     getButton(buttonName) {
         const button = find(this.buttons, ({ name }) => name === buttonName);
 
-        if(!button) {
-            throw "Cannot find button with this name";
-        }
-
-        return button.instance;
+        return button ? button.instance : null;
     }
 
     renderAfterButtons(buttons, $container) {
